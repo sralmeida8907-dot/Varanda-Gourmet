@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Varanda Gourmet</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #6a0dad;
+            color: white;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 15px 10px;
+        }
+
+        .logo {
+            width: 170px;
+            height: 170px;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        h1 {
+            margin-top: 10px;
+            font-size: 25px;
+        }
+
+        .catalogo {
+            padding: 15px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .produto {
+            background: white;
+            color: #333;
+            border-radius: 18px;
+            padding: 12px;
+            margin-bottom: 18px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+        }
+
+        .produto img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 14px;
+        }
+
+        .produto h2 {
+            margin-top: 10px;
+            font-size: 20px;
+        }
+
+        .preco {
+            color: #6a0dad;
+            font-size: 21px;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        .botao {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 12px;
+            background: #8e24aa;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .botao:active {
+            transform: scale(0.98);
+        }
+
+        #carrinho {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            left: 15px;
+            max-width: 570px;
+            margin: auto;
+            background: #ffca28;
+            color: #333;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+
+        .quantidade {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .espaco {
+            height: 90px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <img src="logo.png" alt="Varanda Gourmet" class="logo">
+
+        <h1>Varanda Gourmet</h1>
+        <p>Escolha seu pedido 😋</p>
+    </header>
+
+    <main class="catalogo">
+
+        <div class="produto">
+            <img src="acai.jpg" alt="Açaí com banana">
+
+            <h2>Açaí com Banana</h2>
+
+            <div class="preco">
+                R$ 15,00
+            </div>
+
+            <button class="botao" onclick="adicionarCarrinho('Açaí com Banana', 15)">
+                🛒 Adicionar ao carrinho
+            </button>
+        </div>
+
+        <div class="produto">
+            <img src="acai.jpg" alt="Açaí com morango">
+
+            <h2>Açaí com Morango</h2>
+
+            <div class="preco">
+                R$ 17,00
+            </div>
+
+            <button class="botao" onclick="adicionarCarrinho('Açaí com Morango', 17)">
+                🛒 Adicionar ao carrinho
+            </button>
+        </div>
+
+    </main>
+
+    <div class="espaco"></div>
+
+    <div id="carrinho" onclick="finalizarPedido()">
+        🛒 Carrinho: <span id="quantidade">0</span> item(s)
+
+        <div class="quantidade">
+            Toque aqui para finalizar
+        </div>
+    </div>
+
+    <script>
+        let carrinho = [];
+
+        function adicionarCarrinho(nome, preco) {
+            carrinho.push({
+                nome: nome,
+                preco: preco
+            });
+
+            document.getElementById("quantidade").innerText = carrinho.length;
+
+            alert(nome + " foi adicionado ao carrinho!");
+        }
+
+        function finalizarPedido() {
+
+            if (carrinho.length === 0) {
+                alert("Seu carrinho está vazio!");
+                return;
+            }
+
+            let nome = prompt("Digite seu nome:");
+
+            if (!nome) {
+                return;
+            }
+
+            let whatsapp = prompt("Digite seu número do WhatsApp:");
+
+            if (!whatsapp) {
+                return;
+            }
+
+            let tipo = prompt("Digite RETIRADA ou ENTREGA:");
+
+            if (!tipo) {
+                return;
+            }
+
+            let total = 0;
+            let produtos = "";
+
+            carrinho.forEach(function(item) {
+                produtos += "• " + item.nome + " - R$ " + item.preco.toFixed(2) + "\n";
+                total += item.preco;
+            });
+
+            let mensagem =
+                "Olá! Quero fazer um pedido na Varanda Gourmet! 🍇\n\n" +
+                "👤 Nome: " + nome + "\n" +
+                "📱 WhatsApp: " + whatsapp + "\n" +
+                "📦 Forma: " + tipo + "\n\n" +
+                "🛒 PEDIDO:\n" +
+                produtos +
+                "\n💰 Total: R$ " + total.toFixed(2);
+
+            let numeroVaranda = "5574999414915";
+
+            let link =
+                "https://wa.me/" +
+                numeroVaranda +
+                "?text=" +
+                encodeURIComponent(mensagem);
+
+            window.location.href = link;
+        }
+    </script>
+
+</body>
+</html>
